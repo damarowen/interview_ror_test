@@ -6,7 +6,7 @@ module Api
       # GET /api/v1/jobs
       def index
         if params[:user_id]
-          @jobs = Job.where(user_id: params[:user_idd])
+          @jobs = Job.where(user_id: params[:user_id])
         else
           @jobs = Job.all
         end
@@ -20,22 +20,26 @@ module Api
 
       # POST /api/v1/jobs
       def create
-        @job = Job.new(job_params)
-
-        if @job.save
-          render json: @job, status: :created
-        else
-          render json: { errors: @job.errors.full_messages }, status: :unprocessable_entity
-        end
+          # @job = Job.new(job_params)
+          #
+          # if @job.save
+          #   render json: @job, status: :created
+          # else
+          #   render json: { errors: @job.errors.full_messages }, status: :unprocessable_entity
+          # end
+          job = Job.create!(job_params) # pakai bang method handle ActiveRecord::RecordInvalid
+          render json: job, status: :created
       end
 
       # PATCH/PUT /api/v1/jobs/1
       def update
-        if @job.update(job_params)
-          render json: @job
-        else
-          render json: { errors: @job.errors.full_messages }, status: :unprocessable_entity
-        end
+        # if @job.update(job_params)
+        #   render json: @job
+        # else
+        #   render json: { errors: @job.errors.full_messages }, status: :unprocessable_entity
+        # end
+        @job.update!(job_params)
+        render json: @job
       end
 
       # DELETE /api/v1/jobs/1
@@ -46,10 +50,13 @@ module Api
 
       private
 
+      # hooks rails
       def set_job
         @job = Job.find(params[:id])
       end
 
+
+      # Rails strong parameters. Tujuannya untuk whitelist data yang boleh diterima dari request params[:job].
       def job_params
         params.require(:job).permit(:title, :description, :status, :user_id)
       end
