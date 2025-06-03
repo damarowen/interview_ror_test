@@ -54,8 +54,8 @@ Sebuah project Ruby on Rails untuk take-home test. Fitur meliputi:
 ### 1. Clone & Install dependencies
 
 ```bash
-git clone https://github.com/username/interview-test-api.git
-cd interview-test-api
+git clone https://github.com/damarowen/interview_ror_test.git
+cd interview_ror_test
 bundle install
 ````
 
@@ -157,6 +157,7 @@ http://127.0.0.1:3000/doc/index.html
 * SimpleCov
 * ActiveModelSerializers
 * YARD
+* caching in controller
 
 ---
 
