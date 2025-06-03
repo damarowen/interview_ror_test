@@ -8,6 +8,7 @@ module Api
 
       # GET /api/v1/users
       # Menampilkan daftar user dengan pagination dan cache
+      # @return [JSON] JSON response berisi daftar user terpaginated dan metadata pagination
       def index
         users_scope = User.order(created_at: :desc)
         paginated_users = users_scope.page(current_page).per(per_page)
@@ -33,6 +34,9 @@ module Api
       end
 
       # GET /api/v1/users/:id
+      # Mengambil detail user berdasarkan ID.
+      # Menggunakan cache berdasarkan waktu terakhir update user.
+      # @return [JSON] JSON response berisi data user
       def show
         cache_key = "users/show/#{@user.id}/updated-#{@user.updated_at.to_i}"
         user_data = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
@@ -42,6 +46,11 @@ module Api
       end
 
       # POST /api/v1/users
+      #
+      # Membuat user baru dengan validasi menggunakan strong parameters.
+      # Menghapus cache terkait index.
+      #
+      # @return [JSON] JSON response berisi user yang baru dibuat
       def create
         user = User.create!(user_params)
         invalidate_cache("users", skip_show: true)
@@ -49,6 +58,9 @@ module Api
       end
 
       # PATCH/PUT /api/v1/users/:id
+      # Memperbarui user yang sudah ada berdasarkan ID.
+      # Cache akan di-*invalidate* untuk user terkait.
+      # @return [JSON] JSON response berisi user yang telah diperbarui
       def update
         @user.update!(user_params)
         invalidate_cache("users", id: @user.id)
@@ -56,8 +68,11 @@ module Api
       end
 
       # DELETE /api/v1/users/:id
+      # Menghapus user berdasarkan ID.
+      # Cache akan dihapus dan response tidak mengandung body.
+      # @return [JSON] HTTP 204 No Content
       def destroy
-        @user.destroy
+        @user.destroy!
         invalidate_cache("users", id: @user.id)
         head :no_content
       end
@@ -75,24 +90,6 @@ module Api
       # Rails strong parameters. Tujuannya untuk whitelist data yang boleh diterima dari request params[:user].
       def user_params
         params.require(:user).permit(:name, :email, :phone)
-      end
-
-
-      # Menampilkan response JSON sukses
-      # @param data [Object, nil] Data untuk ditampilkan (bisa nil)
-      # @param status [Symbol] HTTP status code
-      # @param options [Hash] Tambahan opsi render (misal serializer)
-      def render_success(data, status: :ok, meta: nil, serializer: nil, each_serializer: nil)
-        serialized = ActiveModelSerializers::SerializableResource.new(
-          data,
-          serializer: serializer,
-          each_serializer: each_serializer
-        ).as_json
-
-        response = { data: serialized }
-        response[:meta] = meta if meta.present?
-
-        render json: response, status: status
       end
 
 

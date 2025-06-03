@@ -157,6 +157,7 @@ RSpec.describe "Jobs API", type: :request do
 
   # Test GET /api/v1/jobs?user_id=xx
   describe "GET /api/v1/jobs with user_id param" do
+
     it "returns only jobs for the given user" do
       user1 = User.create!(name: "User One", email: "one@mail.com", phone: "081")
       user2 = User.create!(name: "User Two", email: "two@mail.com", phone: "082")
@@ -169,6 +170,17 @@ RSpec.describe "Jobs API", type: :request do
       json = JSON.parse(response.body)
       data = json["data"]
       expect(data.length).to eq(1)
+    end
+
+    it "returns all jobs when user_id is invalid (string)" do
+      user = User.create!(name: "Invalid User", email: "invalid1@mail.com", phone: "081001")
+      Job.create!(title: "Invalid Job", description: "desc", status: "pending", user: user)
+
+      get "/api/v1/jobs", params: { user_id: "abc" }
+
+      expect(response).to have_http_status(:ok)
+      json = JSON.parse(response.body)
+      expect(json["data"]).not_to be_empty
     end
   end
 

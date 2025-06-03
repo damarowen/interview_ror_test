@@ -7,13 +7,10 @@ module Api
       before_action :set_job, only: [:show, :update, :destroy]
 
       # GET /api/v1/jobs
-      #
       # Mengambil daftar job dengan opsi filter dan pagination.
-      #
       # @option params [Integer] :user_id (optional) Filter berdasarkan user ID
       # @option params [Integer] :page (optional) Nomor halaman, default: 1
       # @option params [Integer] :per_page (optional) Jumlah item per halaman, default: 10
-      #
       # @return [JSON] Daftar job yang sudah dipaginasi dan difilter
       def index
         jobs_scope     = filter_jobs.order(created_at: :desc)
@@ -51,8 +48,9 @@ module Api
       end
 
       # POST /api/v1/jobs
-      # @param job [Hash] Job attributes
-      # @return [JSON] Created job
+      # Membuat job baru
+      # @param [Hash] job Atribut job (title, description, status, user_id)
+      # @return [JSON] Job yang berhasil dibuat
       def create
         new_job = Job.create!(job_params)
         invalidate_cache("jobs", skip_show: true)
@@ -60,8 +58,9 @@ module Api
       end
 
       # PATCH/PUT /api/v1/jobs/:id
-      # @param job [Hash] Updated job attributes
-      # @return [JSON] Updated job
+      # Mengupdate atribut job tertentu
+      # @param [Hash] job Atribut job yang ingin diubah
+      # @return [JSON] Job yang berhasil diperbarui
       def update
         @job.update!(job_params)
         invalidate_cache("jobs", id: @job.id) # invalidate index + show cache per ID
@@ -69,6 +68,7 @@ module Api
       end
 
       # DELETE /api/v1/jobs/:id
+      # Menghapus sebuah job berdasarkan ID
       # @return [204 No Content]
       def destroy
         @job.destroy!
@@ -86,6 +86,7 @@ module Api
       end
 
       # Rails strong parameters. Tujuannya untuk whitelist data yang boleh diterima dari request params[:job].
+      # @return [ActionController::Parameters] Parameter yang diizinkan
       def job_params
         params.require(:job).permit(:title, :description, :status, :user_id)
       end
@@ -96,30 +97,14 @@ module Api
         filter_params ? Job.where(user_id: filter_params) : Job.all
       end
 
-      # Mengembalikan user_id dari params jika ada
-      # @return [String, nil]
+      # Mengambil parameter user_id dari query string dan mengkonversinya menjadi Integer.
+      # Jika parameter user_id tidak valid (bukan angka), method ini akan mengembalikan nil.
+      # @return [Integer, nil] Nilai user_id dalam bentuk integer, atau nil jika tidak valid.
       def filter_params
-        params[:user_id].to_i if params[:user_id].present?
+        Integer(params[:user_id]) if params[:user_id].present?
+      rescue ArgumentError, TypeError
+        nil
       end
-
-
-      # Menampilkan response JSON sukses
-      # @param data [Object, nil] Data untuk ditampilkan (bisa nil)
-      # @param status [Symbol] HTTP status code
-      # @param options [Hash] Tambahan opsi render (misal serializer)
-      def render_success(data, status: :ok, meta: nil, serializer: nil, each_serializer: nil)
-        serialized = ActiveModelSerializers::SerializableResource.new(
-          data,
-          serializer: serializer,
-          each_serializer: each_serializer
-        ).as_json
-
-        response = { data: serialized }
-        response[:meta] = meta if meta.present?
-
-        render json: response, status: status
-      end
-
 
     end
   end

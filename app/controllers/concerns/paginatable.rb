@@ -1,7 +1,6 @@
 # app/controllers/concerns/paginatable.rb
 
 # Concern untuk menambahkan kemampuan pagination secara reusable di controller.
-# Biasanya digunakan bersama gem Kaminari.
 module Paginatable
   extend ActiveSupport::Concern
 
