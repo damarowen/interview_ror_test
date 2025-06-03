@@ -1,8 +1,8 @@
 source "https://rubygems.org"
-gem 'rspec-rails'
-gem 'simplecov', require: false, group: :test
-gem 'kaminari'
-gem 'yard'
+gem "rspec-rails"
+gem "simplecov", require: false, group: :test
+gem "kaminari"
+gem "yard"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.2"

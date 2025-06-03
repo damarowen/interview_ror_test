@@ -4,7 +4,7 @@ module Api
       include Paginatable
       include Cacheable
 
-      before_action :set_job, only: [:show, :update, :destroy]
+      before_action :set_job, only: [ :show, :update, :destroy ]
 
       # GET /api/v1/jobs
       # Mengambil daftar job dengan opsi filter dan pagination.
@@ -17,11 +17,11 @@ module Api
         paginated_jobs = jobs_scope.page(current_page).per(per_page)
 
         cache_key = ActiveSupport::Cache.expand_cache_key([
-          'jobs/index',
+          "jobs/index",
           "user-#{filter_params || 'all'}",
           "updated-#{jobs_scope.maximum(:updated_at)&.to_i || 0}",
           "page-#{current_page}",
-          "per_page-#{per_page}"])
+          "per_page-#{per_page}" ])
 
         serialized_jobs = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
           ActiveModelSerializers::SerializableResource.new(
@@ -105,7 +105,6 @@ module Api
       rescue ArgumentError, TypeError
         nil
       end
-
     end
   end
 end

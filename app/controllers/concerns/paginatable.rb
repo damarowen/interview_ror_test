@@ -21,7 +21,7 @@ module Paginatable
   def per_page
     raw = params[:per_page].to_i
     raw = DEFAULT_PER_PAGE if raw <= 0
-    [raw, MAX_PER_PAGE].min
+    [ raw, MAX_PER_PAGE ].min
   end
 
   # Menghasilkan metadata pagination dari hasil query Kaminari

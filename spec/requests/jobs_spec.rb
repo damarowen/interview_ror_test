@@ -1,5 +1,4 @@
 RSpec.describe "Jobs API", type: :request do
-
   # Test GET all jobs
   describe "GET /api/v1/jobs" do
     it "returns http success" do
@@ -157,7 +156,6 @@ RSpec.describe "Jobs API", type: :request do
 
   # Test GET /api/v1/jobs?user_id=xx
   describe "GET /api/v1/jobs with user_id param" do
-
     it "returns only jobs for the given user" do
       user1 = User.create!(name: "User One", email: "one@mail.com", phone: "081")
       user2 = User.create!(name: "User Two", email: "two@mail.com", phone: "082")
@@ -183,5 +181,4 @@ RSpec.describe "Jobs API", type: :request do
       expect(json["data"]).not_to be_empty
     end
   end
-
 end

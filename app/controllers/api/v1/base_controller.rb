@@ -7,7 +7,7 @@ module Api
       private
 
       def not_found
-        render json: { error: 'Record not found' }, status: :not_found
+        render json: { error: "Record not found" }, status: :not_found
       end
 
       def unprocessable_entity(exception)
@@ -36,7 +36,6 @@ module Api
 
         render json: response, status: status
       end
-
     end
   end
 end

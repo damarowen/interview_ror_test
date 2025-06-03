@@ -4,7 +4,7 @@ module Api
       include Paginatable
       include Cacheable
 
-      before_action :set_user, only: [:show, :update, :destroy]
+      before_action :set_user, only: [ :show, :update, :destroy ]
 
       # GET /api/v1/users
       # Menampilkan daftar user dengan pagination dan cache
@@ -14,11 +14,11 @@ module Api
         paginated_users = users_scope.page(current_page).per(per_page)
 
         cache_key = [
-          'users/index',
+          "users/index",
           "updated-#{users_scope.maximum(:updated_at)&.to_i || 0}",
           "page-#{current_page}",
           "per_page-#{per_page}"
-        ].join('/')
+        ].join("/")
 
         serialized_users = Rails.cache.fetch(cache_key, expires_in: 1.hour) do
           ActiveModelSerializers::SerializableResource.new(
@@ -91,8 +91,6 @@ module Api
       def user_params
         params.require(:user).permit(:name, :email, :phone)
       end
-
-
     end
   end
 end

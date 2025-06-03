@@ -1,5 +1,4 @@
 RSpec.describe "Users API", type: :request do
-
   # Test GET all users
   describe "GET /api/v1/users" do
     it "returns http success" do
@@ -102,5 +101,4 @@ RSpec.describe "Users API", type: :request do
       expect(response).to have_http_status(:no_content)
     end
   end
-
 end

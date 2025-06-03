@@ -16,5 +16,4 @@ RSpec.describe User, type: :model do
     user = User.new(name: "User2", email: "dup@mail.com", phone: "082345")
     expect(user).not_to be_valid
   end
-
 end
