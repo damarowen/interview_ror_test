@@ -1,8 +1,31 @@
 
-````markdown
-# Live on 
+# 🚀 Live Demo
 
-https://rubyonrails.damarowen.blog/
+🌐 **Main Site:**  
+[https://rubyonrails.damarowen.blog](https://rubyonrails.damarowen.blog)
+
+📚 **YARD Documentation:**  
+[https://rubyonrails.damarowen.blog/doc/index.html](https://rubyonrails.damarowen.blog/doc/index.html)
+
+<img src="https://github.com/user-attachments/assets/1ef154ea-9cf2-4d31-b162-20620d39798f" width="500" alt="YARD Docs Screenshot" />
+
+📊 **Test Coverage Report:**  
+[https://rubyonrails.damarowen.blog/coverage/index.html#_AllFiles](https://rubyonrails.damarowen.blog/coverage/index.html#_AllFiles)
+
+<img src="https://github.com/user-attachments/assets/711d2ff5-8f50-415e-8cf3-17d6048e3561" width="500" alt="Coverage Report Screenshot" />
+
+---
+
+## 🛠️ API Endpoints
+
+- [GET /api/v1/users](https://rubyonrails.damarowen.blog/api/v1/users)  
+- [GET /api/v1/jobs](https://rubyonrails.damarowen.blog/api/v1/jobs)
+
+## 📬 Postman Collection
+[link-postman](https://crimson-meadow-312449.postman.co/workspace/telkomdev~40956a65-96bc-4c36-94d9-da56873c98ea/collection/11942081-84e5850c-b968-4e3f-b703-0ee5db381174?action=share&creator=11942081)
+  
+````markdown
+
 
 # 📦 Interview Test API
 
@@ -137,3 +160,11 @@ http://127.0.0.1:3000/doc/index.html
 
 ---
 
+---
+
+## Next Development
+
+### 📊 Performance & Monitoring
+- [ ] Tambahkan caching di level model/controller menggunakan Redis
+
+---
