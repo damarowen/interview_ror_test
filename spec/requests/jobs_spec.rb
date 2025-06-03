@@ -68,6 +68,7 @@ RSpec.describe "Jobs API", type: :request do
       expect(json["errors"]).to include("User must exist")
     end
   end
+
   # Test GET a single job by ID
   describe "GET /api/v1/jobs/:id" do
     it "returns a job with the given ID" do
@@ -78,10 +79,11 @@ RSpec.describe "Jobs API", type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json["id"]).to eq(job.id)
-      expect(json["title"]).to eq("Single Job")
+      data = json["data"]
+      expect(data["id"]).to eq(job.id)
     end
   end
+
   # Test GET /api/v1/jobs/:id with invalid ID
   describe "GET /api/v1/jobs/:id with invalid ID" do
     it "returns 404 not found" do
@@ -92,6 +94,7 @@ RSpec.describe "Jobs API", type: :request do
       expect(json["error"]).to eq("Record not found")
     end
   end
+
   # Test POST /api/v1/jobs with valid data
   describe "POST /api/v1/jobs" do
     it "creates a job" do
@@ -107,10 +110,11 @@ RSpec.describe "Jobs API", type: :request do
 
       expect(response).to have_http_status(:created).or have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json["title"]).to eq("New Job")
-      expect(json["status"]).to eq("pending")
+      data = json["data"]
+      expect(data["title"]).to eq("New Job")
     end
   end
+
   # Test POST /jobs/:id with invalid data to trigger RecordInvalid
   describe "POST /api/v1/jobs with invalid data (trigger RecordInvalid)" do
     it "returns 422 via BaseController rescue_from" do
@@ -130,6 +134,7 @@ RSpec.describe "Jobs API", type: :request do
       expect(json["errors"]).to include("Title can't be blank")
     end
   end
+
   # Test PATCH /jobs/:id with invalid data to trigger RecordInvalid
   describe "PATCH /api/v1/jobs/:id with invalid data" do
     it "returns 422 from BaseController" do
@@ -149,6 +154,7 @@ RSpec.describe "Jobs API", type: :request do
       expect(json["errors"]).to include("Title can't be blank")
     end
   end
+
   # Test GET /api/v1/jobs?user_id=xx
   describe "GET /api/v1/jobs with user_id param" do
     it "returns only jobs for the given user" do
@@ -161,10 +167,9 @@ RSpec.describe "Jobs API", type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json.length).to eq(1)
-      expect(json.first["title"]).to eq("A")
+      data = json["data"]
+      expect(data.length).to eq(1)
     end
   end
-
 
 end

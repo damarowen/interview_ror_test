@@ -20,7 +20,7 @@ RSpec.describe "Users API", type: :request do
       }
       expect(response).to have_http_status(:created).or have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json["name"]).to eq("New User")
+      expect(json["data"]["name"]).to eq("New User")
     end
   end
 
@@ -32,8 +32,8 @@ RSpec.describe "Users API", type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json["id"]).to eq(user.id)
-      expect(json["email"]).to eq("find@mail.com")
+      expect(json["data"]["id"]).to eq(user.id)
+      expect(json["data"]["email"]).to eq("find@mail.com")
     end
   end
 
@@ -90,7 +90,7 @@ RSpec.describe "Users API", type: :request do
 
       expect(response).to have_http_status(:ok)
       json = JSON.parse(response.body)
-      expect(json["name"]).to eq("Updated Name")
+      expect(json["data"]["name"]).to eq("Updated Name")
     end
   end
 
